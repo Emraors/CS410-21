@@ -1,5 +1,6 @@
 module NowYouTry.GettingStarted where
 
+open import Data.Nat
 -- This is a comment
 
 {- And this is a multiline comment.
@@ -40,4 +41,32 @@ distribute (a , inj₁ b) = inj₁ (a , b)
 distribute (a , inj₂ c) = inj₂ (a , c)
 
 distributeInverse : {A B C : Set} → (A × B) ⊎ (A × C) -> A × (B ⊎ C)
-distributeInverse = {!!}
+distributeInverse (inj₁ (a , b)) =  a , inj₁ b 
+distributeInverse (inj₂ (c , d)) = c , inj₂ d
+
+
+--∣ My notes
+
+
+data Vec (A : Set) : ℕ → Set where
+  []   : Vec A 0
+  _::_ : {n : ℕ} → A → Vec A n → Vec A (suc n)
+
+_++_ :  {A : Set} {n m : ℕ} → Vec A n → Vec A m → Vec A (n + m)
+[] ++ ys = ys
+(x :: xs) ++ ys = x :: (xs ++ ys)
+
+head : {A : Set} {n : ℕ} -> Vec A (suc n) -> A
+head (x :: _) = x
+
+tail : {A : Set} {n : ℕ} → Vec A (suc n) → Vec A n
+tail (_ :: xs) = xs
+
+
+data Fin : ℕ -> Set where
+  zero : {n : ℕ} -> Fin (suc n)
+  suc  : {n : ℕ} -> Fin n -> Fin (suc n)
+
+_!!_ : ∀ {A : Set} {n : ℕ} -> Vec A n -> Fin n -> A
+(x :: _) !! zero = x
+(_ :: xs) !! (suc i) = xs !! i
